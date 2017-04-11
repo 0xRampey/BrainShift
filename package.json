@@ -4,7 +4,9 @@
   "description": "An attempt at using EEG brain waves to locomote in a VR-simulated environment",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack js/main.js dist/bundle.js",
+    "start": "npm run build && ./node_modules/.bin/browser-sync start --server --files '*.html, css/*.css, js/*.js'"
   },
   "repository": {
     "type": "git",
@@ -18,7 +20,8 @@
   },
   "homepage": "https://github.com/prampey/BrainShift#readme",
   "devDependencies": {
-    "webpack": "^2.3.3"
+    "webpack": "^2.3.3",
+    "browser-sync": "^2.18.8"
   },
   "dependencies": {
     "aframe": "^0.5.0"

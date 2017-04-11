@@ -79650,7 +79650,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  * Created by prudhvirampey on 11/04/17.
  */
 
-// SOme weird bug where I can't seem to import js files from the same folder as main.js
+// Some weird bug where I can't seem to import js files from the same folder as main.js
 
 
 /***/ }),
