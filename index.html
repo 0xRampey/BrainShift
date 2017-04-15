@@ -7,7 +7,7 @@
     <meta name="author" content="Donovan Kraeker">
     <meta name="description" content="WebVR virtual reality example website experience using A-Frame designed by Donovan Kraeker">
     <script src="dist/bundle.js"></script>
-    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v1.14.0/dist/aframe-extras.min.js"></script>
+    <!--<script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v1.14.0/dist/aframe-extras.min.js"></script>-->
 </head>
 
 <body>
@@ -296,7 +296,7 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
 src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
 
     <!-- Bench -->
-    <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="-15 0.7 -29" rotation="0 180 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)">
+    <a-entity static-body id="bench1" geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="-15 0.7 -29" rotation="0 180 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)">
         <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="0 0 0.2" rotation="0 0 0" material="shader: standard; metalness: 0.7; src: url(images/wood.jpg)"></a-entity>
         <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="0 0 -0.2" rotation="0 0 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)"></a-entity>
         <a-entity geometry="primitive: box; depth: 0.1; height: 0.1; width: 0.7" position="-1.05 0 -0.07" rotation="0 90 0" material="shader: standard; metalness: 0.8; color: grey"></a-entity>
@@ -310,7 +310,7 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
         <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="0 0.2 -0.45" rotation="90 0 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)"></a-entity>
     </a-entity>
 
-    <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="15 0.7 -29" rotation="0 180 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)">
+    <a-entity static-body geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="15 0.7 -29" rotation="0 180 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)">
         <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="0 0 0.2" rotation="0 0 0" material="shader: standard; metalness: 0.7; src: url(images/wood.jpg)"></a-entity>
         <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="0 0 -0.2" rotation="0 0 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)"></a-entity>
         <a-entity geometry="primitive: box; depth: 0.1; height: 0.1; width: 0.7" position="-1.05 0 -0.07" rotation="0 90 0" material="shader: standard; metalness: 0.8; color: grey"></a-entity>
@@ -324,7 +324,7 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
         <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="0 0.2 -0.45" rotation="90 0 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)"></a-entity>
     </a-entity>
 
-    <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="15 0.7 -46" rotation="0 0 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)">
+    <a-entity static-body geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="15 0.7 -46" rotation="0 0 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)">
         <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="0 0 0.2" rotation="0 0 0" material="shader: standard; metalness: 0.7; src: url(images/wood.jpg)"></a-entity>
         <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="0 0 -0.2" rotation="0 0 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)"></a-entity>
         <a-entity geometry="primitive: box; depth: 0.1; height: 0.1; width: 0.7" position="-1.05 0 -0.07" rotation="0 90 0" material="shader: standard; metalness: 0.8; color: grey"></a-entity>
@@ -338,7 +338,7 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
         <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="0 0.2 -0.45" rotation="90 0 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)"></a-entity>
     </a-entity>
 
-    <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="-15 0.7 -46" rotation="0 0 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)">
+    <a-entity static-body geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="-15 0.7 -46" rotation="0 0 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)">
         <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="0 0 0.2" rotation="0 0 0" material="shader: standard; metalness: 0.7; src: url(images/wood.jpg)"></a-entity>
         <a-entity geometry="primitive: box; depth: 0.15; height: 0.1; width: 2" position="0 0 -0.2" rotation="0 0 0" material="shader: standard; metalness: 0.6; src: url(images/wood.jpg)"></a-entity>
         <a-entity geometry="primitive: box; depth: 0.1; height: 0.1; width: 0.7" position="-1.05 0 -0.07" rotation="0 90 0" material="shader: standard; metalness: 0.8; color: grey"></a-entity>
@@ -410,7 +410,7 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
     <a-entity static-body geometry="primitive: plane; height: 2.19; width: 12" position="0 4.8 -26.9" rotation="10 0 0" material="shader: flat; transparent: true; src: url(images/webvr.jpg)"></a-entity>
 
     <!-- Floor -->
-    <a-entity static-body geometry="primitive: plane; height: 110; width: 70" position="0 0 -40" rotation="-90 0 0" material="shader: flat; src: url(images/floor.jpg); repeat: 50 100"></a-entity>
+    <a-entity id="plane" static-body geometry="primitive: plane; height: 110; width: 70" position="0 0 -40" rotation="-90 0 0" material="shader: flat; src: url(images/floor.jpg); repeat: 50 100"></a-entity>
     <!-- Camera -->
     <a-entity id="camera" camera raycaster crawling-cursor kinematic-body universal-controls jump-ability="enableDoubleJump: true; distance: 2.8;" position="0 1.8 -14" rotation="0 -45 0" cursor-visible="enabled: false">
         <a-entity id="cursor" cursor="fuse: true; maxDistance: 5; timeout: 200" geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.01" material="color: #1a608f" position="0 0 -0.69">
@@ -418,7 +418,6 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
         <a-entity id="drag" append="on: mousedown;" position="0 0.8 -3"></a-entity>
     </a-entity>
     <a-cursor geometry="primitive: ring; radius-outer: 0.2; radius-inner: 0.06" material="color: lightblue" opacity="0.7"></a-cursor>
-    <a-cursor geometry="primitive: ring; radius-outer: 0.2; radius-inner: 0.06" material="color: red" opacity="0.7"></a-cursor>
 
     <a-sky src="images/sky.jpg" radius="250"></a-sky>
 </a-scene>
@@ -431,6 +430,17 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
             onetime(camera,"gaze_fixed", function(e)
             {
                 var gaze_coordinates=e.detail.gaze_coordinates;
+                console.log(gaze_coordinates);
+                // Analyse the interesection for interesting objects
+                var intersection=e.detail.intersection.object;
+                console.log(intersection);
+                // Check if plane (ground) was used to specify a location
+                if(intersection.el.id=="plane")
+                {
+
+                    console.log("Plane detected");
+                }
+
                 camera.setAttribute('position', { x: gaze_coordinates.x, y: gaze_coordinates.y, z: gaze_coordinates.z });
                 console.log("Travel to cursor specified location");
             });
@@ -448,6 +458,13 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
         }
 
     };
+</script>
+<script>
+    var obj=document.getElementById("plane").getObject3D('mesh');
+    var obj1=document.getElementById("bench1").object3D;
+    var bbox = new THREE.Box3().setFromObject(obj1);
+    // Printing out bounded box coordinates of a sample rigid object
+    console.log(bbox.min,bbox.max);
 </script>
 <script>
     document.querySelector('#speech1').addEventListener('click', function() {

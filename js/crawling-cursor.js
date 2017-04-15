@@ -34,12 +34,10 @@ AFRAME.registerComponent('crawling-cursor', {
 
             data.target = cursor;
         }
-
         el.addEventListener("raycaster-intersection", function(e) {
 
             var intersection = getNearestIntersection(e.detail.intersections);
             if (!intersection) {return;}
-
             // a matrix which represents item's movement, rotation and scale on global world
             var mat = intersection.object.matrixWorld;
             // remove parallel movement from the matrix
@@ -51,7 +49,8 @@ AFRAME.registerComponent('crawling-cursor', {
             // look at target coordinate = intersection coordinate + global normal vector
             var lookAtTarget = new THREE.Vector3().addVectors(intersection.point, global_normal);
             data.target.object3D.lookAt(lookAtTarget);
-            this.emit("gaze_fixed",{ gaze_coordinates: lookAtTarget },true);
+
+            this.emit("gaze_fixed",{ gaze_coordinates: lookAtTarget, intersection: intersection },true);
             // cursor coordinate = intersection coordinate + normal vector * 0.05(hover 5cm above intersection point)
             var cursorPosition = new THREE.Vector3().addVectors(intersection.point, global_normal.multiplyScalar(0.05));
             data.target.setAttribute("position", cursorPosition);
