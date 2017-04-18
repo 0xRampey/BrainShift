@@ -421,17 +421,69 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
 
     <a-sky src="images/sky.jpg" radius="250"></a-sky>
 </a-scene>
-<script>
 
+
+<script type='text/javascript' src='js/astar.js'></script>
+<script>
+    // Helper function to generate range
+    Array.range= function(a, b, step){
+        var A= [];
+        if(typeof a=='number'){
+            A[0]= a;
+            step= step || 1;
+            while(a+step<= b){
+                A[A.length]= a+= step;
+            }
+        }
+        else{
+            var s= 'abcdefghijklmnopqrstuvwxyz';
+            if(a=== a.toUpperCase()){
+                b=b.toUpperCase();
+                s= s.toUpperCase();
+            }
+            s= s.substring(s.indexOf(a), s.indexOf(b)+ 1);
+            A= s.split('');
+        }
+        return A;
+    }
+    var obj=document.getElementById("plane").getObject3D('mesh');
+    var planebox = new THREE.Box3().setFromObject(obj);
+    var node_array=[];
+    // Constructing graph for plane
+    for (i in Array.range(-55,55))
+    {
+        var array=[];
+        for (j in Array.range(-35,35))
+        {
+            var node=1;
+            array.push(node);
+        }
+        node_array.push(array);
+    }
+    var graph = new Graph(node_array);
+    console.log(graph);
+    var translated_system_origin={x: 35, y: 55};
     document.body.onkeyup = function(e) {
 //    If key 'T' is pressed
         if(e.keyCode==84) {
             var camera=document.getElementById("camera");
+            var cameraPos=camera.getAttribute('position');
+            var camera_coordinates={x: cameraPos.x, y: cameraPos.z};
+            console.log("Camera coordinates", camera_coordinates);
+
+            var graphPos=translateWorldToGraph(camera_coordinates);
+            console.log("Graph position of camera", graphPos);
+            var start = graph.grid[Math.round(graphPos.row)][Math.round(graphPos.col)];
             onetime(camera,"gaze_fixed", function(e)
             {
                 var gaze_coordinates=e.detail.gaze_coordinates;
-                console.log(gaze_coordinates);
-                // Analyse the interesection for interesting objects
+                console.log("Gaze coordinates", gaze_coordinates);
+                var endGraphPos=translateWorldToGraph({x: gaze_coordinates.x, y: gaze_coordinates.z});
+                console.log("Graph position of destination", endGraphPos);
+                var end = graph.grid[Math.round(endGraphPos.row)][Math.round(endGraphPos.col)];
+                var result = astar.search(graph, start, end);
+                console.log(result);
+                // Analyse the intersection for interesting objects
                 var intersection=e.detail.intersection.object;
                 console.log(intersection);
                 // Check if plane (ground) was used to specify a location
@@ -458,14 +510,33 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
         }
 
     };
+    function translateWorldToGraph(original_coordinates)
+    {
+        var x1,y1,h,k;
+        [x1, y1]= [original_coordinates.x, original_coordinates.y];
+        [h, k]= [translated_system_origin.x, translated_system_origin.y];
+        var x= x1 + h;
+        var y= y1 + k;
+        return {row: y, col: x };
+    }
+    function translateGraphToWorld(graph_coordinates)
+    {
+        var x,y,h,k;
+        [x, y]= [graph_coordinates.x1, graph_coordinates.y1];
+        [h, k]= [translated_system_origin.x, translated_system_origin.y];
+        var x1= x - h;
+        var y1= y - k;
+        return {x1: x1, y1: y1 };
+    }
 </script>
 <script>
-    var obj=document.getElementById("plane").getObject3D('mesh');
+
     var obj1=document.getElementById("bench1").object3D;
     var bbox = new THREE.Box3().setFromObject(obj1);
     // Printing out bounded box coordinates of a sample rigid object
     console.log(bbox.min,bbox.max);
 </script>
+
 <script>
     document.querySelector('#speech1').addEventListener('click', function() {
         document.querySelector('#speech1').setAttribute('visible', 'false')
