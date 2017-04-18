@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack js/main.js dist/bundle.js",
-    "start": "npm run build && ./node_modules/.bin/browser-sync start --server --files '*.html, css/*.css, js/*.js'"
+    "build": "./node_modules/.bin/webpack --watch &",
+    "start": "npm run build && ./node_modules/.bin/browser-sync start --server --files '*.html, css/*.css js/*.js'"
   },
   "repository": {
     "type": "git",

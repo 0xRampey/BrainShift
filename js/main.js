@@ -6,4 +6,3 @@ import 'aframe';
 import '../js/crawling-cursor.js';
 var extras= require('aframe-extras');
 extras.registerAll();
-
