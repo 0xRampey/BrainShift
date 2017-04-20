@@ -486,7 +486,7 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
                 console.log("Graph position of destination", endGraphPos);
                 var end = graph.grid[Math.round(endGraphPos.row)][Math.round(endGraphPos.col)];
                 var result = astar.search(graph, start, end);
-                drawCurves(result);
+                //drawCurves(result);
                 console.log(result);
                 // Analyse the intersection for interesting objects
                 var intersection=e.detail.intersection.object;
@@ -497,8 +497,9 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
 
                     console.log("Plane detected");
                 }
-
-                camera.setAttribute('position', { x: gaze_coordinates.x, y: gaze_coordinates.y, z: gaze_coordinates.z });
+                
+                gradualTeleport(result,camera,gaze_coordinates.y)
+                //camera.setAttribute('position', { x: gaze_coordinates.x, y: gaze_coordinates.y, z: gaze_coordinates.z });
                 console.log("Travel to cursor specified location");
             });
         }
@@ -533,13 +534,11 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
         var y1= y - k;
         return {x1: x1, y1: y1 };
     }
-    function drawCurves(result)
+    function drawCurves(node)
     {
-        for (var i=0; i < result.length; i++)
-        {
-            var nodes=result[i];
-            console.log("Grid nodes", nodes);
-            var pathPoint=translateGraphToWorld({x1: nodes.y, y1: nodes.x});
+//            var node=result[i];
+            console.log("Grid nodes", node);
+            var pathPoint=translateGraphToWorld({x1: node.y, y1: node.x});
             console.log("Path points", pathPoint);
             var sceneEl = document.querySelector('a-scene');
             var entityEl = document.createElement('a-entity');
@@ -550,7 +549,25 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
                 });
             entityEl.setAttribute('position', {x: pathPoint.x1, y: 1.6, z: pathPoint.y1});
             sceneEl.appendChild(entityEl);
+    }
+    function gradualTeleport(result,camera,z1)
+    {   
+        var i = 1;
+        
+        function loop(){
+            setTimeout(function(){
+                var node = result[i]
+                var point = translateGraphToWorld({x1: node.y, y1: node.x});
+                camera.setAttribute('position', { x: point.x1, y: z1, z: point.y1 })             
+                drawCurves(node)
+                i++;
+                if (i<result.length){
+                    loop();
+                }
+            },10)
         }
+        
+        loop();
     }
 </script>
 <script>
