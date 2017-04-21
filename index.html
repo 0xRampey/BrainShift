@@ -468,8 +468,8 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
     var bench = document.getElementById("bench1").getObject3D("mesh")
     var benchbox = new THREE.Box3().setFromObject(bench);
     console.log("Bench dimensions", benchbox.min, benchbox.max);
-
-    var graph = new Graph(node_array);
+    
+    var graph = new Graph(node_array,{ diagonal: true });
     console.log(graph);
     // Coordinates of our new origin to suit our real world coordinate system
     var translated_system_origin={x: 350, y: 550};
