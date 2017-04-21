@@ -426,6 +426,7 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
 <!-- Code required for A-star implementation -->
 <script type='text/javascript' src='js/astar.js'></script>
 <script>
+    var eyeLevel = 1.5;
     // Helper function to generate ranges of numbers
     Array.range= function(a, b, step){
         var A= [];
@@ -483,7 +484,7 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
             var graphPos=translateWorldToGraph(camera_coordinates);
             console.log("Graph position of camera", graphPos);
             var start = graph.grid[Math.round(graphPos.row)][Math.round(graphPos.col)];
-            
+                        
             var speed = (e.keyCode-49)*15; 
             console.log("Speed of camera", speed);
 
@@ -507,6 +508,8 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
 
                     console.log("Plane detected");
                 }
+                
+                markDestination(gaze_coordinates);
                                 
                 gradualTeleport(result,camera,speed)
                 //camera.setAttribute('position', { x: gaze_coordinates.x, y: gaze_coordinates.y, z: gaze_coordinates.z });
@@ -569,7 +572,7 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
                 var node = result[i]
                 var point = translateGraphToWorld({x1: node.y, y1: node.x});
 
-                camera.setAttribute('position', { x: point.x1, y: 1.5, z: point.y1 })             
+                camera.setAttribute('position', { x: point.x1, y: eyeLevel, z: point.y1 })             
                 drawPath(node)
                 i++;
                 if (i<result.length){
@@ -579,6 +582,22 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
         }
         
         movement();
+    }
+    
+    function markDestination(gaze_coordinates)
+    {
+        var scene = document.querySelector('a-scene');
+        var marker = document.createElement('a-entity');
+        marker.setAttribute('position', { 
+            x: gaze_coordinates.x, 
+            y: 0.1, 
+            z: gaze_coordinates.z });
+        marker.setAttribute('geometry',{ 
+            primitive: 'cone',
+            radiusBottom: 1,
+            radiusTop: 0.1})
+        marker.setAttribute('material',{color: 'red'})
+        scene.appendChild(marker);
     }
 </script>
 <script>
