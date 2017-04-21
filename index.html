@@ -453,23 +453,28 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
     console.log("Plane dimensions", planebox.min, planebox.max);
     var node_array=[];
     // Constructing a graph for our plane
-    for (i in Array.range(-55,55))
+    for (i in Array.range(-550,550))
     {
         var array=[];
-        for (j in Array.range(-35,35))
+        for (j in Array.range(-350,350))
         {
             var node=1;
             array.push(node);
         }
         node_array.push(array);
     }
+    
+    var bench = document.getElementById("bench1").getObject3D("mesh")
+    var benchbox = new THREE.Box3().setFromObject(bench);
+    console.log("Bench dimensions", benchbox.min, benchbox.max);
+
     var graph = new Graph(node_array);
     console.log(graph);
     // Coordinates of our new origin to suit our real world coordinate system
-    var translated_system_origin={x: 35, y: 55};
+    var translated_system_origin={x: 350, y: 550};
     document.body.onkeyup = function(e) {
-//    If key 'T' is pressed
-        if(e.keyCode==84) {
+//    Keys 1-5 to teleport with appropriate speeds
+        if(e.keyCode<54 && e.keyCode>48) {
             var camera=document.getElementById("camera");
             var cameraPos=camera.getAttribute('position');
             var camera_coordinates={x: cameraPos.x, y: cameraPos.z};
@@ -478,6 +483,10 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
             var graphPos=translateWorldToGraph(camera_coordinates);
             console.log("Graph position of camera", graphPos);
             var start = graph.grid[Math.round(graphPos.row)][Math.round(graphPos.col)];
+            
+            var speed = (e.keyCode-49)*15; 
+            console.log("Speed of camera", speed);
+
             onetime(camera,"gaze_fixed", function(e)
             {
                 var gaze_coordinates=e.detail.gaze_coordinates;
@@ -488,6 +497,7 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
                 var result = astar.search(graph, start, end);
                 //drawCurves(result);
                 console.log(result);
+                console.log("Number of nodes in path",result.length);
                 // Analyse the intersection for interesting objects
                 var intersection=e.detail.intersection.object;
                 console.log(intersection);
@@ -497,8 +507,8 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
 
                     console.log("Plane detected");
                 }
-                
-                gradualTeleport(result,camera,gaze_coordinates.y)
+                                
+                gradualTeleport(result,camera,speed)
                 //camera.setAttribute('position', { x: gaze_coordinates.x, y: gaze_coordinates.y, z: gaze_coordinates.z });
                 console.log("Travel to cursor specified location");
             });
@@ -534,9 +544,8 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
         var y1= y - k;
         return {x1: x1, y1: y1 };
     }
-    function drawCurves(node)
+    function drawPath(node)
     {
-//            var node=result[i];
             console.log("Grid nodes", node);
             var pathPoint=translateGraphToWorld({x1: node.y, y1: node.x});
             console.log("Path points", pathPoint);
@@ -544,30 +553,32 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
             var entityEl = document.createElement('a-entity');
             entityEl.setAttribute('geometry', {
                     primitive: 'box',
-                    height: 3,
+                    height: 0,
                     width: 1
                 });
-            entityEl.setAttribute('position', {x: pathPoint.x1, y: 1.6, z: pathPoint.y1});
+            entityEl.setAttribute('position', {x: pathPoint.x1, y: 0.1, z: pathPoint.y1});
             sceneEl.appendChild(entityEl);
     }
-    function gradualTeleport(result,camera,z1)
+    function gradualTeleport(result,camera,delay)
     {   
         var i = 1;
         
-        function loop(){
+        // Loop with delay between each iteration for showing movement
+        function movement(){
             setTimeout(function(){
                 var node = result[i]
                 var point = translateGraphToWorld({x1: node.y, y1: node.x});
-                camera.setAttribute('position', { x: point.x1, y: z1, z: point.y1 })             
-                drawCurves(node)
+
+                camera.setAttribute('position', { x: point.x1, y: 1.5, z: point.y1 })             
+                drawPath(node)
                 i++;
                 if (i<result.length){
-                    loop();
+                    movement();
                 }
-            },10)
+            },delay)
         }
         
-        loop();
+        movement();
     }
 </script>
 <script>
