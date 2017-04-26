@@ -448,31 +448,44 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
         }
         return A;
     }
-    var obj=document.getElementById("plane").getObject3D('mesh');
+    var obj=document.querySelector("#plane").getObject3D('mesh');
     // Generate a bounding box of our ground plane
     var planebox = new THREE.Box3().setFromObject(obj);
     console.log("Plane dimensions", planebox.min, planebox.max);
     var node_array=[];
     // Constructing a graph for our plane
-    for (i in Array.range(-550,550))
+    for (i in Array.range(-55,55))
     {
         var array=[];
-        for (j in Array.range(-350,350))
+        for (j in Array.range(-35,35))
         {
             var node=1;
             array.push(node);
         }
         node_array.push(array);
     }
-    
-    var bench = document.getElementById("bench1").getObject3D("mesh")
+
+    var bench = document.querySelector("#bench1").getObject3D("mesh")
     var benchbox = new THREE.Box3().setFromObject(bench);
-    console.log("Bench dimensions", benchbox.min, benchbox.max);
+    console.log("Bench dimensions", Math.ceil(benchbox.min.y), Math.ceil(benchbox.max.y));
+    
+    for(i in Array.range(Math.floor(benchbox.min.x),Math.ceil(benchbox.max.x)))
+        {
+            for (j in Array.range(Math.floor(benchbox.min.y),Math.ceil(benchbox.max.y)))
+        {
+            node_array[i][j]=0;
+        }
+        
+        }
+//   
+//    var bengeo = document.querySelector("static-body");
+//    console.log("Bench geometry", bengeo);
+
     
     var graph = new Graph(node_array,{ diagonal: true });
-    console.log(graph);
+    console.log("graph",graph.cleanDirty());
     // Coordinates of our new origin to suit our real world coordinate system
-    var translated_system_origin={x: 350, y: 550};
+    var translated_system_origin={x: 35, y: 55};
     document.body.onkeyup = function(e) {
 //    Keys 1-5 to teleport with appropriate speeds
         if(e.keyCode<54 && e.keyCode>48) {
