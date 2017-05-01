@@ -213,12 +213,12 @@ src: url(images/wall.jpg)">
     </a-entity>
 
     <!-- Counter -->
-    <a-entity static-body geometry="primitive: box; depth: 1.6; height: 0.2; width: 11.2" position="10.2 1 -21.5" rotation="0 90 0" material="shader: standard; side: double; metalness: 0.9;
+    <a-entity id="counter1" static-body geometry="primitive: box; depth: 1.6; height: 0.2; width: 11.2" position="10.2 1 -21.5" rotation="0 90 0" material="shader: standard; side: double; metalness: 0.9;
 src: url(images/floor.jpg); repeat: 3 1"></a-entity>
     <a-entity static-body geometry="primitive: box; depth: 1; height: 1; width: 11" position="10 0.5 -21.5" rotation="0 90 0" material="shader: standard; side: double; metalness: 0.6;
 color: #3b4c72"></a-entity>
 
-    <a-entity static-body geometry="primitive: box; depth: 1.6; height: 0.2; width: 11.2" position="-10.2 1 -21.5" rotation="0 90 0" material="shader: standard; side: double; metalness: 0.9;
+    <a-entity id="counter2" static-body geometry="primitive: box; depth: 1.6; height: 0.2; width: 11.2" position="-10.2 1 -21.5" rotation="0 90 0" material="shader: standard; side: double; metalness: 0.9;
 src: url(images/floor.jpg); repeat: 3 1"></a-entity>
     <a-entity static-body geometry="primitive: box; depth: 1; height: 1; width: 11" position="-10 0.5 -21.5" rotation="0 90 0" material="shader: standard; side: double; metalness: 0.6;
 color: #3b4c72"></a-entity>
@@ -427,37 +427,16 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
 <script type='text/javascript' src='js/astar.js'></script>
 <script>
     var eyeLevel = 1.5;
-    // Helper function to generate ranges of numbers
-    Array.range= function(a, b, step){
-        var A= [];
-        if(typeof a=='number'){
-            A[0]= a;
-            step= step || 1;
-            while(a+step<= b){
-                A[A.length]= a+= step;
-            }
-        }
-        else{
-            var s= 'abcdefghijklmnopqrstuvwxyz';
-            if(a=== a.toUpperCase()){
-                b=b.toUpperCase();
-                s= s.toUpperCase();
-            }
-            s= s.substring(s.indexOf(a), s.indexOf(b)+ 1);
-            A= s.split('');
-        }
-        return A;
-    }
     var obj=document.querySelector("#plane").getObject3D('mesh');
     // Generate a bounding box of our ground plane
     var planebox = new THREE.Box3().setFromObject(obj);
     console.log("Plane dimensions", planebox.min, planebox.max);
     var node_array=[];
     // Constructing a graph for our plane
-    for (i in Array.range(-55,55))
+    for (i=-55; i < 56; i++)
     {
         var array=[];
-        for (j in Array.range(-35,35))
+        for (var j=-35; j < 36; j++)
         {
             var node=1;
             array.push(node);
@@ -465,27 +444,34 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
         node_array.push(array);
     }
 
-    var bench = document.querySelector("#bench1").getObject3D("mesh")
-    var benchbox = new THREE.Box3().setFromObject(bench);
-    console.log("Bench dimensions", Math.ceil(benchbox.min.y), Math.ceil(benchbox.max.y));
+    // Coordinates of our new origin to suit our real world coordinate system
+    var translated_system_origin={x: 35, y: 55};
+
+    var benchEl = document.querySelector("#counter1").object3D;
+    //Create bounding box 
+    var benchbox = new THREE.Box3().setFromObject(benchEl);
+    console.log("Bench position", benchEl.position);
+    var bboxmax = benchbox.max;
+    var bboxmin= benchbox.min;
+    console.log("Bench dimensions", bboxmax, bboxmin);
     
-    for(i in Array.range(Math.floor(benchbox.min.x),Math.ceil(benchbox.max.x)))
+
+    for(var i=Math.round(bboxmin.x); i<=Math.round(bboxmax.x); i++)
         {
-            for (j in Array.range(Math.floor(benchbox.min.y),Math.ceil(benchbox.max.y)))
+            for (var j=Math.round(bboxmin.z); j<=Math.round(bboxmax.z); j++)
         {
-            node_array[i][j]=0;
+            console.log( {x:i, y:j} , "graph_coordinates" );
+            var graph_coordinates=translateWorldToGraph({x:i, y:j});
+            console.log(graph_coordinates,"graph_coordinates");
+            //Update the required values of the node_array with 0 (wall)
+            node_array[graph_coordinates.row][graph_coordinates.col]=0;
         }
         
         }
-//   
-//    var bengeo = document.querySelector("static-body");
-//    console.log("Bench geometry", bengeo);
-
     
     var graph = new Graph(node_array,{ diagonal: true });
     console.log("graph",graph.cleanDirty());
-    // Coordinates of our new origin to suit our real world coordinate system
-    var translated_system_origin={x: 35, y: 55};
+    
     document.body.onkeyup = function(e) {
 //    Keys 1-5 to teleport with appropriate speeds
         if(e.keyCode<54 && e.keyCode>48) {
