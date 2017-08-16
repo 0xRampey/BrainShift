@@ -1,6 +1,7 @@
+import io from 'socket.io-client';
 import 'aframe';
-// Some weird bug where I can't seem to import js files from the same folder as main.js
 import './crawling-cursor.js';
+
+const socket = io(); // Registering client socket
 var extras= require('aframe-extras');
 extras.registerAll();
-// Component for drawing path curves
