@@ -9,10 +9,11 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 app.use(express.static(__dirname));
+var client_socket;
 io.on('connection', function (socket) {
 
   console.log('User connected');
-
+  client_socket=socket;
   socket.on('disconnect', function () {
     console.log('User disconnected');
   });
@@ -31,6 +32,26 @@ var client = neurosky.createClient({
 client.on('data',function(data){
 
 	console.log(data);
+	
+	var blinkStrength=data["blinkStrength"];
+	var blinkDetected=false;
+
+	if (blinkStrength === undefined)
+	{
+		blinkDetected=false;
+	}
+	else
+	{
+		if (blinkStrength>60)
+		{
+			blinkDetected=true;
+		}
+	}
+
+	if(blinkDetected)
+	{
+		client_socket.emit("Blink detected");
+	}
 });
 
 client.on('connect_error', function(err) {
