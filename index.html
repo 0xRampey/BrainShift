@@ -473,9 +473,18 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
     console.log(graph);
     // Coordinates of our new origin to suit our real world coordinate system
     var translated_system_origin={x: 350, y: 550};
+    // Check for any relevant keystrokes
     document.body.onkeyup = function(e) {
 //    Keys 1-5 to teleport with appropriate speeds
         if(e.keyCode<54 && e.keyCode>48) {
+            var speed = (e.keyCode-49)*15;
+            moveToDestination(speed);
+        }
+
+    };
+
+    function moveToDestination(moveSpeed)
+        {
             var camera=document.getElementById("camera");
             var cameraPos=camera.getAttribute('position');
             var camera_coordinates={x: cameraPos.x, y: cameraPos.z};
@@ -485,7 +494,7 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
             console.log("Graph position of camera", graphPos);
             var start = graph.grid[Math.round(graphPos.row)][Math.round(graphPos.col)];
                         
-            var speed = (e.keyCode-49)*15; 
+            var speed = moveSpeed; 
             console.log("Speed of camera", speed);
 
             onetime(camera,"gaze_fixed", function(e)
@@ -517,7 +526,7 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
             });
         }
 
-        function onetime(node, type, callback) {
+    function onetime(node, type, callback) {
             // create event
             node.addEventListener(type, function(e) {
                 // remove event
@@ -528,7 +537,6 @@ src: url(images/bush.jpg); repeat: 10 1;"></a-entity>
 
         }
 
-    };
     function translateWorldToGraph(original_coordinates)
     {
         var x1,y1,h,k;
