@@ -3,7 +3,7 @@ var express = require('express');
 var io = require('socket.io')(http);
 var http = require('http').Server(app);
 // Setting up library for interfacing with Neurosky
-var neurosky = require('./js/neurosky');
+var thinkgear = require('node-thinkgear-sockets');
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
@@ -24,38 +24,31 @@ io.listen(app.listen(3000));
 console.log("Listening for users on port 3000");
 
 // Creating connection with Thinkgear
-var client = neurosky.createClient({
-	appName: 'BrainShift',
-	appKey: '0fc4141b4b45c675cc8d3a765b8d71c5bde9390'
-});
+var client = thinkgear.createClient();
 
-client.on('data',function(data){
+client.on('blink_data',function(data){
 
 	console.log(data);
 	
 	var blinkStrength=data["blinkStrength"];
-	var blinkDetected=false;
 
-	if (blinkStrength === undefined)
-	{
-		blinkDetected=false;
-	}
-	else
-	{
+
 		if (blinkStrength>60)
 		{
-			blinkDetected=true;
+			var blinkDetected=true;
+			client.on('data', function(data) {
+				if(blinkDetected)
+				{
+				if(data.eSense.attention>60)
+				{
+					console.log("Found a focused blink!");
+					client_socket.emit("Blink detected");
+				}
+			}
+			});
+			
 		}
-	}
 
-	if(blinkDetected)
-	{
-		client_socket.emit("Blink detected");
-	}
-});
-
-client.on('connect_error', function(err) {
-  console.log("Thinkgear seems to be offline. Please check connection");
 });
 
 console.log("Attempting connection with Thinkgear....");
